@@ -1,3 +1,5 @@
-﻿namespace Artsofte.DAL.Repositories.Interfaces;
+﻿using Artsofte.DAL.Entities;
 
-public interface IProgrammingLanguageRepo { }
+namespace Artsofte.DAL.Repositories.Interfaces;
+
+public interface IProgrammingLanguageRepo : IRepo<ProgrammingLanguage> { }

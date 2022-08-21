@@ -9,7 +9,7 @@ namespace Artsofte.DAL.Repositories;
 public class DepartmentRepo : BaseRepo<Department>, IDepartmentRepo
 {
     public DepartmentRepo(ApplicationDbContext context) : base(context) { }
-    public DepartmentRepo(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    internal DepartmentRepo(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public override async Task<IEnumerable<Department>> GetAllAsync()
     {

@@ -12,5 +12,6 @@ public interface IRepo<T> : IDisposable where T : BaseEntity, new()
     Task<int> AddAsync(T entity, bool persist = true);
     Task<int> UpdateAsync(T entity, bool persist = true);
     Task<int> DeleteAsync(T entity, bool persist = true);
+    Task<bool> Contains(int id);
     Task<int> SaveChangesAsync();
 }

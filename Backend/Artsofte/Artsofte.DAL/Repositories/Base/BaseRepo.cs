@@ -50,6 +50,8 @@ public abstract class BaseRepo<T> : IRepo<T> where T : BaseEntity, new()
         return await Context.SaveChangesAsync();
     }
 
+    public async Task<bool> Contains(int id) => await FindAsNoTrackingAsync(id) != null;
+    
     public void Dispose()
     {
         Context.Dispose();

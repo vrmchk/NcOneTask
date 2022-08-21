@@ -17,10 +17,15 @@ public class ApplicationDbContext : DbContext
         {
             employee
                 .HasOne(e => e.Department)
-                .WithMany(d => d.EmployeesNavigation);
+                .WithMany(d => d.EmployeesNavigation)
+                .HasForeignKey(e => e.DepartmentId)
+                .OnDelete(DeleteBehavior.ClientCascade);
+
             employee
                 .HasOne(e => e.ProgrammingLanguage)
-                .WithMany(pl => pl.EmployeesNavigation);
+                .WithMany(pl => pl.EmployeesNavigation)
+                .HasForeignKey(e => e.ProgrammingLanguageId)
+                .OnDelete(DeleteBehavior.ClientCascade);
         });
     }
 }

@@ -1,3 +1,5 @@
-﻿namespace Artsofte.DAL.Repositories.Interfaces;
+﻿using Artsofte.DAL.Entities;
 
-public interface IDepartmentRepo { }
+namespace Artsofte.DAL.Repositories.Interfaces;
+
+public interface IDepartmentRepo : IRepo<Department> { }

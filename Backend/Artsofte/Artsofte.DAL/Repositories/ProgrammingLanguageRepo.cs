@@ -9,7 +9,7 @@ namespace Artsofte.DAL.Repositories;
 public class ProgrammingLanguageRepo : BaseRepo<ProgrammingLanguage>, IProgrammingLanguageRepo
 {
     public ProgrammingLanguageRepo(ApplicationDbContext context) : base(context) { }
-    public ProgrammingLanguageRepo(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    internal ProgrammingLanguageRepo(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public override async Task<IEnumerable<ProgrammingLanguage>> GetAllAsync()
     {
