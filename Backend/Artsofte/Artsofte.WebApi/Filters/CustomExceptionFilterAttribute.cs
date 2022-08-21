@@ -1,4 +1,5 @@
 ﻿using Artsofte.BLL.Exceptions;
+using Artsofte.Models.Errors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -6,32 +7,33 @@ namespace Artsofte.Filters;
 
 public class CustomExceptionFilterAttribute : ExceptionFilterAttribute
 {
-    private readonly IWebHostEnvironment _hostEnvironment;
-
-    public CustomExceptionFilterAttribute(IWebHostEnvironment hostEnvironment)
-    {
-        _hostEnvironment = hostEnvironment;
-    }
-
     public override void OnException(ExceptionContext context)
     {
         var ex = context.Exception;
         string message = ex.Message;
-        string stackTrace = string.Empty;
-        if (_hostEnvironment.IsDevelopment())
-            stackTrace = context.Exception.StackTrace ?? string.Empty;
 
-        IActionResult actionResult = ex switch {
-            EmployeeDoesntExistException => new BadRequestObjectResult(new {
-                Error = "Employee issue", Message = message, StackTrace = stackTrace
+        IActionResult actionResult = ex switch
+        {
+            EmployeeDoesntExistException employeeEx => new BadRequestObjectResult(new ErrorResponse
+            {
+                Errors = new List<ErrorModel>
+                    {new ErrorModel {CauseOfError = employeeEx.CauseOfError, Message = message}}
             }),
-            DepartmentDoesntExistException => new BadRequestObjectResult(new {
-                Error = "Department issue", Message = message, StackTrace = stackTrace
+            DepartmentDoesntExistException departmentEx => new BadRequestObjectResult(new ErrorResponse
+            {
+                Errors = new List<ErrorModel>
+                    {new ErrorModel {CauseOfError = departmentEx.CauseOfError, Message = message}}
             }),
-            ProgrammingLanguageDoesntExistException => new BadRequestObjectResult(new {
-                Error = "Programming language issue", Message = message, StackTrace = stackTrace
+            ProgrammingLanguageDoesntExistException languageEx => new BadRequestObjectResult(new ErrorResponse
+            {
+                Errors = new List<ErrorModel>
+                    {new ErrorModel {CauseOfError = languageEx.CauseOfError, Message = message}}
             }),
-            _ => new ObjectResult(new {Error = "General error", Message = message, StackTrace = stackTrace}) {
+            _ => new ObjectResult(new ErrorResponse
+            {
+                Errors = new List<ErrorModel> {new ErrorModel {CauseOfError = "General Error", Message = message}}
+            })
+            {
                 StatusCode = 500
             }
         };
