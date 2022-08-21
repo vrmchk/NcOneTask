@@ -1,3 +1,4 @@
+using System.Reflection;
 using Artsofte.BLL.Profiles;
 using Artsofte.BLL.Services;
 using Artsofte.BLL.Services.Interfaces;
@@ -6,6 +7,7 @@ using Artsofte.DAL.Repositories;
 using Artsofte.DAL.Repositories.Interfaces;
 using Artsofte.Filters;
 using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,9 +30,12 @@ builder.Services.AddScoped<IProgrammingLanguageService, ProgrammingLanguageServi
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 builder.Services.AddControllers(config =>
-{
-    config.Filters.Add(new CustomExceptionFilterAttribute(builder.Environment));
-});
+    {
+        config.Filters.Add<ValidationFilter>();
+        config.Filters.Add<CustomExceptionFilterAttribute>();
+    })
+    .AddFluentValidation(config => config.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
